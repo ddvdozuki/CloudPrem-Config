@@ -5,7 +5,7 @@ include {
 
 # Set the source to an immutable released version of the infrastructure module being deployed:
 terraform {
-  source = "git::https://github.com/Dozuki/CloudPrem-Infra.git//cloudprem?ref=v1.3"
+  source = "git::https://github.com/Dozuki/CloudPrem-Infra.git//cloudprem?ref=v1.4"
 }
 
 # Configure input values for the specific environment being deployed:
@@ -13,6 +13,13 @@ inputs = {
   region = "us-west-2"
 
   environment = "qa"
+
+  # Specify whether this is a production stack or a development stack. Production stacks have data protection settings
+  # enabled but will leave S3 buckets and RDS instances behind after a terraform delete operation.
+  # Default is production.
+  # Possible options: production,dev
+  #
+  stack_type = "dev"
 
   # --- BEGIN Networking Configuration --- #
   # (Values below reflect defaults if unset)
@@ -74,21 +81,30 @@ inputs = {
 
   # --- END EKS & Worker Node Configuration --- #
 
-  # --- BEGIN Databsae and storage Options --- #
+  # --- BEGIN Database and storage Options --- #
 
   # AWS KMS key identifier for S3 encryption. The identifier can be one of the following format: Key id, key ARN, alias
   # name or alias ARN
   #
   #s3_kms_key_id = "alias/aws/s3"
 
+  # Whether to create the dozuki S3 buckets or not. If this is set to false, you must specify the bucket names in the
+  # variables below.
+  #
+  #create_s3_buckets = true
+
+  # If you have existing data in S3 buckets you can specify them here. These should be left blank if creating a fresh
+  # install. If setting these variables, be sure to set "create_s3_buckets" to false or they will be ignored.
+  #
+  #s3_objects_bucket = ""
+  #s3_images_bucket = ""
+  #s3_documents_bucket = ""
+  #s3_pdfs_bucket = ""
+
   # AWS KMS key identifier for RDS encryption. The identifier can be one of the following format: Key id, key ARN,
   # alias name or alias ARN
   #
   #rds_kms_key_id = "alias/aws/rds"
-
-  # Whether to create the dozuki S3 buckets or not.
-  #
-  #create_s3_buckets = true
 
   # We can seed the database from an existing RDS snapshot in this region. Type the snapshot identifier in this field
   # or leave blank to start with a fresh database. Note: If you do use a snapshot it's critical that during stack
@@ -130,7 +146,7 @@ inputs = {
   #
   #cache_instance_type = "cache.t2.small"
 
-  # --- END Databsae and storage Options --- #
+  # --- END Database and storage Options --- #
 
   # --- BEGIN Bastion --- #
 
@@ -160,6 +176,16 @@ inputs = {
   # this variable if you already have an SSM parameter setup for the dozuki license before stack creation.
   #
   #dozuki_license_parameter_name = ""
+
+  # On fresh installs this variable specifies which sequence number to install. This sequence number must be available
+  # to your customer account. If left blank or set to 0 (default) the latest sequence number available will be installed.
+  #
+  #replicated_app_sequence_number = 0
+
+  # This option will spin up additional infrastructure to support webhooks. This includes an external AWS managed Kafka
+  # cluster as well as redis and mongodb deployed onto the kubernetes cluster.
+  #
+  #enable_webhooks = false
 
   # --- END General Configuration --- #
 }
