@@ -5,7 +5,7 @@ include {
 
 # Set the source to an immutable released version of the infrastructure module being deployed:
 terraform {
-  source = "git::https://github.com/Dozuki/CloudPrem-Infra.git//cloudprem?ref=v1.4"
+  source = "git::https://github.com/Dozuki/CloudPrem-Infra.git//cloudprem?ref=v1.4.1"
 }
 
 # Configure input values for the specific environment being deployed:
