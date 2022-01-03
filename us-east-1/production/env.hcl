@@ -36,8 +36,6 @@ locals {
   # Default: false
   #enable_webhooks = false
 
-  # --- END General Configuration --- #
-
   # Specify whether data protection settings should be enabled for databases, s3 buckets, and compute clusters. This should
   # be set to true for production stacks and false for others. When set to true, databases will have deletion protection
   # enabled and will need to be manually disabled if you ever want to delete this stack.
@@ -46,8 +44,27 @@ locals {
   # Default: true
   #protect_resources = true
 
+  # If deploying on a workstation, what AWSCLI credential profile should we use.
+  # Note: This is not used if deploying using codepipeline & cloudformation.
+  #
+  # Default: "default"
+  #aws_profile = "default"
+
+  # Google translate API token to support machine translation.
+  #
+  # Default: ""
+  #google_translate_api_token = ""
+
+  # --- END General Configuration --- #
+
   # --- BEGIN Networking Configuration --- #
   # (Values below reflect defaults if unset)
+
+  # The number of Availability zones we should use for deployment.
+  #
+  # Possible options: 3 - 10
+  # Default: 3
+  #azs_count = 3
 
   # The VPC ID to where we'll be deploying our resources. (If creating a new VPC leave this field and subnets blank).
   #
@@ -117,6 +134,11 @@ locals {
   # Default: 3
   #eks_desired_capacity = 3
 
+  # The KMS key to use to encrypt cluster secrets. If none is specified a new key will be created.
+  #
+  # Default: ""
+  #eks_kms_key_id = ""
+
   # --- END EKS & Worker Node Configuration --- #
 
   # --- BEGIN Database and storage Options --- #
@@ -125,7 +147,7 @@ locals {
   # name or alias ARN
   #
   # Default: "alias/aws/s3"
-  #s3_kms_key_id = ""
+  #s3_kms_key_id = "alias/aws/s3"
 
   # Whether to create the Dozuki S3 buckets or not. If this is set to false, you must specify the bucket names in the
   # variables below.
@@ -146,7 +168,7 @@ locals {
   # alias name or alias ARN
   #
   # Default: "alias/aws/rds"
-  #rds_kms_key_id = ""
+  #rds_kms_key_id = "alias/aws/rds"
 
   # We can seed the database from an existing RDS snapshot in this region. Type the snapshot identifier in this field
   # or leave blank to start with a fresh database. Note: If you *do* use a snapshot it's critical that during stack
@@ -196,8 +218,14 @@ locals {
   # The compute and memory capacity of the nodes in the Cache Cluster
   #
   # Possible options: Any supported AWS ElastiCache instance type in your region
-  # Default: "cache.t2.small"
-  #cache_instance_type = "cache.t2.small"
+  # Default: "cache.t2.micro"
+  #elasticache_instance_type = "cache.t2.micro"
+
+  # The cluster size for your cache pool
+  #
+  # Possible options: >= 1
+  # Default 1
+  #elasticache_cluster_size = 1
 
   # --- END Database and storage Options --- #
 }

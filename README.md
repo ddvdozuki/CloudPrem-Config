@@ -32,75 +32,50 @@ to access it.
 An example directory structure with two accounts:
 
 ```
-aws_account_1
-  account.hcl
-  us-east-1
-    region.hcl
-    development
-      env.hcl
-      app
-        terragrunt.hcl
-      compute
-        terragrunt.hcl
-      network
-        terragrunt.hcl
-      storage
-        terragrunt.hcl
-    qa
-      env.hcl
-      app
-        terragrunt.hcl
-      compute
-        terragrunt.hcl
-      network
-        terragrunt.hcl
-      storage
-        terragrunt.hcl
-    production
-      env.hcl
-      app
-        terragrunt.hcl
-      compute
-        terragrunt.hcl
-      network
-        terragrunt.hcl
-      storage
-        terragrunt.hcl
-  
-aws_account_2
-  account.hcl
-  us-east-1
-    region.hcl
-    development
-      env.hcl
-      app
-        terragrunt.hcl
-      compute
-        terragrunt.hcl
-      network
-        terragrunt.hcl
-      storage
-        terragrunt.hcl
-    qa
-      env.hcl
-      app
-        terragrunt.hcl
-      compute
-        terragrunt.hcl
-      network
-        terragrunt.hcl
-      storage
-        terragrunt.hcl
-    production
-      env.hcl
-      app
-        terragrunt.hcl
-      compute
-        terragrunt.hcl
-      network
-        terragrunt.hcl
-      storage
-        terragrunt.hcl
+aws_account_1/
+├── account.hcl
+└── us-east-1/
+    ├── region.hcl
+    ├── development/
+    │   ├── env.hcl
+    │   ├── logical/
+    │   │   └── terragrunt.hcl
+    │   └── physical/
+    │       └── terragrunt.hcl
+    ├── qa/
+    │   ├── env.hcl
+    │   ├── logical/
+    │   │   └── terragrunt.hcl
+    │   └── physical/
+    │       └── terragrunt.hcl
+    └── production/
+        ├── env.hcl
+        ├── logical/
+        │   └── terragrunt.hcl
+        └── physical/
+            └── terragrunt.hcl
+aws_account_2/
+├── account.hcl
+└── us-east-1/
+    ├── region.hcl
+    ├── development/
+    │   ├── env.hcl
+    │   ├── logical/
+    │   │   └── terragrunt.hcl
+    │   └── physical/
+    │       └── terragrunt.hcl
+    ├── qa/
+    │   ├── env.hcl
+    │   ├── logical/
+    │   │   └── terragrunt.hcl
+    │   └── physical/
+    │       └── terragrunt.hcl
+    └── production/
+        ├── env.hcl
+        ├── logical/
+        │   └── terragrunt.hcl
+        └── physical/
+            └── terragrunt.hcl
 ```
 
 An example `account.hcl` file:
@@ -128,71 +103,46 @@ as simple as creating a new region folder at the same directory level and naming
 
 An example directory structure with two regions:
 ```
-us-east-1
-  region.hcl
-  development
-    env.hcl
-    app
-      terragrunt.hcl
-    compute
-      terragrunt.hcl
-    network
-      terragrunt.hcl
-    storage
-      terragrunt.hcl
-  qa
-    env.hcl
-    app
-      terragrunt.hcl
-    compute
-      terragrunt.hcl
-    network
-      terragrunt.hcl
-    storage
-      terragrunt.hcl
-  production
-    env.hcl
-    app
-      terragrunt.hcl
-    compute
-      terragrunt.hcl
-    network
-      terragrunt.hcl
-    storage
-      terragrunt.hcl
-  
-us-west-2
-  region.hcl
-  development
-    env.hcl
-    app
-      terragrunt.hcl
-    compute
-      terragrunt.hcl
-    network
-      terragrunt.hcl
-    storage
-      terragrunt.hcl
-  qa
-    env.hcl
-    app
-      terragrunt.hcl
-    compute
-      terragrunt.hcl
-    network
-      terragrunt.hcl
-    storage
-      terragrunt.hcl
-  production
-    env.hcl
-    app
-      terragrunt.hcl
-    compute
-      terragrunt.hcl
-    network
-      terragrunt.hcl
-    storage
-      terragrunt.hcl
+us-east-1/
+├── region.hcl
+├── development/
+│   ├── env.hcl
+│   ├── logical/
+│   │   └── terragrunt.hcl
+│   └── physical/
+│       └── terragrunt.hcl
+├── qa/
+│   ├── env.hcl
+│   ├── logical/
+│   │   └── terragrunt.hcl
+│   └── physical/
+│       └── terragrunt.hcl
+└── production/
+    ├── env.hcl
+    ├── logical/
+    │   └── terragrunt.hcl
+    └── physical/
+        └── terragrunt.hcl
+us-west-2/
+├── region.hcl
+├── development/
+│   ├── env.hcl
+│   ├── logical/
+│   │   └── terragrunt.hcl
+│   └── physical/
+│       └── terragrunt.hcl
+├── qa/
+│   ├── env.hcl
+│   ├── logical/
+│   │   └── terragrunt.hcl
+│   └── physical/
+│       └── terragrunt.hcl
+└── production/
+    ├── env.hcl
+    ├── logical/
+    │   └── terragrunt.hcl
+    └── physical/
+        └── terragrunt.hcl
 ```
 
 ### Environment
@@ -216,7 +166,7 @@ The defaults included here are 3 separate environments:
 Inside the module the only configuration you should ever need to modify is the infrastructure release version, you can see an example of the configuration block here:
 ```hcl
 terraform {
-  source = "git::https://github.com/Dozuki/CloudPrem-Infra.git//cloudprem/app?ref=v2.0"
+  source = "git::https://github.com/Dozuki/CloudPrem-Infra.git//cloudprem/physical?ref=v2.5"
 }
 ```
 At the end of the `source=` string you'll see a `?ref=` parameter. This points to a specific release of our infrastructure code. If you want to upgrade your environment
