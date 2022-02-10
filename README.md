@@ -14,105 +14,11 @@ process. (See `Module Config & Updating` below for upgrade instructions)
 
 ## Folder Structure
 This repository is broken down into the following sections:
-* account
-   * region
-      * environment
-         * module
+* region
+  * environment
+    * module
 
 At each level a configuration file exists that sets variables for that level.
-
-### Account
-While we support any number of accounts _this_ folder structure provides an example of one
-account as you can see by the [account.hcl](./account.hcl) file. If your usage requires multiple accounts
-you can simply create folders related to your different accounts, put an `account.hcl` file inside each one
-and then copy the `us-east-1` folder and all it's contents into each account diretory. 
-Modify the `account.hcl` file with the account number and the aws cli profile you will use
-to access it.
-
-An example directory structure with two accounts:
-
-```
-aws_account_1
-  account.hcl
-  us-east-1
-    region.hcl
-    development
-      env.hcl
-      app
-        terragrunt.hcl
-      compute
-        terragrunt.hcl
-      network
-        terragrunt.hcl
-      storage
-        terragrunt.hcl
-    qa
-      env.hcl
-      app
-        terragrunt.hcl
-      compute
-        terragrunt.hcl
-      network
-        terragrunt.hcl
-      storage
-        terragrunt.hcl
-    production
-      env.hcl
-      app
-        terragrunt.hcl
-      compute
-        terragrunt.hcl
-      network
-        terragrunt.hcl
-      storage
-        terragrunt.hcl
-  
-aws_account_2
-  account.hcl
-  us-east-1
-    region.hcl
-    development
-      env.hcl
-      app
-        terragrunt.hcl
-      compute
-        terragrunt.hcl
-      network
-        terragrunt.hcl
-      storage
-        terragrunt.hcl
-    qa
-      env.hcl
-      app
-        terragrunt.hcl
-      compute
-        terragrunt.hcl
-      network
-        terragrunt.hcl
-      storage
-        terragrunt.hcl
-    production
-      env.hcl
-      app
-        terragrunt.hcl
-      compute
-        terragrunt.hcl
-      network
-        terragrunt.hcl
-      storage
-        terragrunt.hcl
-```
-
-An example `account.hcl` file:
-```hcl
-locals {
-  aws_account_id = "012345678"
-  aws_profile    = "default"
-}
-```
-
-This configuration will be used with the generated provider blocks to lock down access to the specified
-account number. The profile is unused in CodePipeline deployments.
 
 ### Region
 As an example the `us-east-1` region has a config file `region.hcl` inside the `us-east-1` folder
@@ -128,75 +34,50 @@ as simple as creating a new region folder at the same directory level and naming
 
 An example directory structure with two regions:
 ```
-us-east-1
-  region.hcl
-  development
-    env.hcl
-    app
-      terragrunt.hcl
-    compute
-      terragrunt.hcl
-    network
-      terragrunt.hcl
-    storage
-      terragrunt.hcl
-  qa
-    env.hcl
-    app
-      terragrunt.hcl
-    compute
-      terragrunt.hcl
-    network
-      terragrunt.hcl
-    storage
-      terragrunt.hcl
-  production
-    env.hcl
-    app
-      terragrunt.hcl
-    compute
-      terragrunt.hcl
-    network
-      terragrunt.hcl
-    storage
-      terragrunt.hcl
-  
-us-west-2
-  region.hcl
-  development
-    env.hcl
-    app
-      terragrunt.hcl
-    compute
-      terragrunt.hcl
-    network
-      terragrunt.hcl
-    storage
-      terragrunt.hcl
-  qa
-    env.hcl
-    app
-      terragrunt.hcl
-    compute
-      terragrunt.hcl
-    network
-      terragrunt.hcl
-    storage
-      terragrunt.hcl
-  production
-    env.hcl
-    app
-      terragrunt.hcl
-    compute
-      terragrunt.hcl
-    network
-      terragrunt.hcl
-    storage
-      terragrunt.hcl
+us-east-1/
+├── region.hcl
+├── development/
+│   ├── env.hcl
+│   ├── logical/
+│   │   └── terragrunt.hcl
+│   └── physical/
+│       └── terragrunt.hcl
+├── qa/
+│   ├── env.hcl
+│   ├── logical/
+│   │   └── terragrunt.hcl
+│   └── physical/
+│       └── terragrunt.hcl
+└── production/
+    ├── env.hcl
+    ├── logical/
+    │   └── terragrunt.hcl
+    └── physical/
+        └── terragrunt.hcl
+us-west-2/
+├── region.hcl
+├── development/
+│   ├── env.hcl
+│   ├── logical/
+│   │   └── terragrunt.hcl
+│   └── physical/
+│       └── terragrunt.hcl
+├── qa/
+│   ├── env.hcl
+│   ├── logical/
+│   │   └── terragrunt.hcl
+│   └── physical/
+│       └── terragrunt.hcl
+└── production/
+    ├── env.hcl
+    ├── logical/
+    │   └── terragrunt.hcl
+    └── physical/
+        └── terragrunt.hcl
 ```
 
 ### Environment
-Similarly to account and region, this level has an `env.hcl` file that specifies input variables for the
+Similarly to region, this level has an `env.hcl` file that specifies input variables for the
 individual environments. To see a full list of the variables available refer to the `env.hcl` file inside 
 any of the environment folders. All available variables are listed with descriptions and defaults.
 
@@ -216,7 +97,7 @@ The defaults included here are 3 separate environments:
 Inside the module the only configuration you should ever need to modify is the infrastructure release version, you can see an example of the configuration block here:
 ```hcl
 terraform {
-  source = "git::https://github.com/Dozuki/CloudPrem-Infra.git//cloudprem/app?ref=v2.0"
+  source = "git::https://github.com/Dozuki/CloudPrem-Infra.git//cloudprem/physical?ref=v2.5"
 }
 ```
 At the end of the `source=` string you'll see a `?ref=` parameter. This points to a specific release of our infrastructure code. If you want to upgrade your environment
