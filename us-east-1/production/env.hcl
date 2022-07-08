@@ -99,7 +99,7 @@ locals {
   #
   # Possible options: true, false
   # Default: true
-  #public_access = true
+  #app_public_access = true
 
   # --- END Networking Configuration --- #
 
@@ -191,7 +191,7 @@ locals {
   #
   # Possible options: true, false
   # Default: true
-  #rds_multi_az = true
+  # rds_multi_az = true
 
   # The initial size of the database storage allocated (in Gigabytes).
   #
@@ -214,6 +214,53 @@ locals {
   # Possible options: true, false
   # Default: false
   #enable_bi = false
+
+  # If BI is enabled above, this flag will allow or deny internet access to the BI database server. If you set this to
+  # true, be sure to update the `bi_access_cidrs` variable to an ip range that includes only the locations you want to
+  # allow access to. It's highly discouraged to use a wide-open setting like 0.0.0.0/0.
+  #
+  # Note: This setting is mutually exlusive with `bi_vpn_access`. Both cannot be true.
+  #
+  # Possible options: true, false
+  # Default: false
+  #bi_public_access = false
+
+  # If BI is enabled above, this flag, if set to true, will create an OpenVPN server and connection credentials that will
+  # allow secure access to the BI database server. If you set this to true, be sure to update the `bi_access_cidrs` variable
+  # to an ip range that includes only the locations you want to allow access to the VPN server. It's highly discouraged
+  # to use a wide-open setting like 0.0.0.0/0. Be sure to review the `bi_vpn_user_list` variable for credential settings.
+  #
+  # Note: This setting is mutually exlusive with `bi_public_access`. Both cannot be true.
+  #
+  # Possible options: true, false
+  # Default: false
+  #bi_vpn_access = false
+
+  # If BI & VPN access is enabled above, these are the users for which credentials and configuration will be generated.
+  # The OpenVPN server uses mutual authentication which means it's all TLS certificate based, no passwords
+  # are needed. The terraform will generate OpenVPN configuration files that include the proper certificates and upload
+  # them to an s3 bucket. The bucket name will be output once the physical module completes, you can then navigate to that
+  # bucket and download the credential and configuration file to load into your OpenVPN client of choice
+  #
+  # Note: Each user in this list will have unique credentials and configuration generated for them.
+  #
+  # Possible options: Any list of usernames, separate multiple with a comma: ["root", "user1"]
+  # Default: ["root"]
+  #bi_vpn_user_list = ["root"]
+
+  # If BI and either public or vpn access is enabled above, this is the CIDR list that will be allowed to access either
+  # the BI database itself (if public is enabled) or the VPN server (if VPN is enabled). If unset, the terraform code
+  # will set this variable to the VPC CIDR, this is a secure default but not what you want if you are using
+  # `bi_public_access` or `bi_vpn_access` so be sure to update it accordingly. Although possible to use a wide-open setting
+  # like ["0.0.0.0/0"] this is highly discouraged as anyone on the internet would be able to access the BI database or
+  # the VPN server and thus your entire proprietary dataset could be exposed if they are able to compromise the VPN or
+  # MySQL server.
+  #
+  # Note: To use multiple CIDRs, separate them with a comma like so: ["0.0.0.0/0", "1.1.1.1/32"]
+  #
+  # Possible options: Any IPv4 CIDR like ["0.0.0.0/0"] or ["1.1.1.1/32"]
+  # Default: VPC CIDR
+  #bi_access_cidrs = []
 
   # The compute and memory capacity of the nodes in the Cache Cluster
   #
