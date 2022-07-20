@@ -97,7 +97,7 @@ The defaults included here are 3 separate environments:
 Inside the module the only configuration you should ever need to modify is the infrastructure release version, you can see an example of the configuration block here:
 ```hcl
 terraform {
-  source = "git::https://github.com/Dozuki/CloudPrem-Infra.git//cloudprem/physical?ref=v2.5"
+  source = "git::https://github.com/Dozuki/CloudPrem-Infra.git//cloudprem/physical?ref=v2.6"
 }
 ```
 At the end of the `source=` string you'll see a `?ref=` parameter. This points to a specific release of our infrastructure code. If you want to upgrade your environment
