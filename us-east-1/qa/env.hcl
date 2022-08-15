@@ -82,18 +82,20 @@ locals {
   # Default: true
   highly_available_nat_gateway = false
 
-  # This CIDR will be allowed to connect to the app dashboard. This is where you upgrade to new versions as well as
+  # These CIDRs will be allowed to connect to the app dashboard. This is where you upgrade to new versions as well as
   # view cluster status and start/stop the cluster. You probably want to lock this down to your company network CIDR,
   # especially if you chose 'true' for public access.
   #
-  # Default: "0.0.0.0/0"
-  #replicated_ui_access_cidr = "0.0.0.0/0"
+  # Note: To add multiple CIDRs, separate entries with a comma: ["1.1.1.1/32","1.0.0.0/27"]
+  # Default: ["0.0.0.0/0"]
+  #replicated_ui_access_cidrs = ["0.0.0.0/0"]
 
-  # This CIDR will be allowed to connect to Dozuki. If running a public site, use the default value. Otherwise you
+  # These CIDRs will be allowed to connect to Dozuki. If running a public site, use the default value. Otherwise you
   # probably want to lock this down to the VPC or your VPN CIDR."
   #
-  # Default: "0.0.0.0/0"
-  #app_access_cidr = "0.0.0.0/0"
+  # Note: To add multiple CIDRs, separate entries with a comma: ["1.1.1.1/32","1.0.0.0/27"]
+  # Default: ["0.0.0.0/0"]
+  #app_access_cidrs = ["0.0.0.0/0"]
 
   # Should the app and dashboard be accessible via a publicly routable IP and domain?
   #
