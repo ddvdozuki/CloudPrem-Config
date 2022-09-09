@@ -264,6 +264,14 @@ locals {
   # Default: VPC CIDR
   #bi_access_cidrs = []
 
+  # If BI is enabled Grafana will be installed on your stack and be accessible at port 3000. This is the CIDR list that
+  # will be allowed access. If left blank it will default to the VPC CIDR which means you would need a transit gateway
+  # or VPN into the VPC to access it.
+  #
+  # Possible options: Any IPv4 CIDR like ["0.0.0.0/0"] or ["1.1.1.1/32"]
+  # Default: VPC CIDR
+  #grafana_access_cidrs = []
+
   # The compute and memory capacity of the nodes in the Cache Cluster
   #
   # Possible options: Any supported AWS ElastiCache instance type in your region
