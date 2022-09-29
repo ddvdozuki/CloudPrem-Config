@@ -28,6 +28,14 @@ locals {
   # Default: 0 (which will install latest sequence)
   #replicated_app_sequence_number = 0
 
+  # On fresh installs this variable specifies which channel to find the sequence indicated in `replicated_app_sequence_number`
+  # variable. This channel id must be associated to your customer account. If left blank the default channel id will be used.
+  #
+  # Note: This is NOT the channel name, but the UUID of the channel. This must be provided to you by Dozuki.
+  #
+  # Default: "" (which will look for the sequence in the default channel associated with your license)
+  #replicated_channel = ""
+
   # This option will spin up additional infrastructure to support webhooks. This includes an external AWS managed Kafka
   # cluster as well as redis and mongodb deployed onto the kubernetes cluster. Webhooks must be enabled on your license
   # before you enable this.
@@ -165,6 +173,7 @@ locals {
   #s3_images_bucket = ""
   #s3_documents_bucket = ""
   #s3_pdfs_bucket = ""
+  #s3_logging_bucket = ""
 
   # AWS KMS key identifier for RDS encryption. The identifier can be one of the following format: Key id, key ARN,
   # alias name or alias ARN
