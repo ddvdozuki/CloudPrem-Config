@@ -13,20 +13,13 @@ locals {
   #
   #identifier = ""
 
-  # The SSM parameter name that stores the Dozuki license file provided to you. If empty Terraform will attempt to get
-  # the license from a parameter with name /{identifier}/dozuki/{environment}/license or
-  # /dozuki/{environment}/license if identifier is not set.
-  # Note: This variable is auto-populated via a parameter in the cloudformation stack creation. You should only set
-  # this variable if you already have an SSM parameter setup for the dozuki license before stack creation.
+  # The SSM parameter name that stores the Dozuki Customer ID provided to you. If empty Terraform will attempt to get
+  # the license from a parameter with name /{identifier}/dozuki/{environment}/customer_id or
+  # /dozuki/{environment}/customer_id if identifier is not set.
+  # Note: This variable is auto-populated via a parameter in the CloudFormation stack creation. You should only set
+  # this variable if you already have an SSM parameter setup for the Dozuki Customer ID before stack creation.
   #
-  #dozuki_license_parameter_name = ""
-
-  # On fresh installs this variable specifies which sequence number to install. This sequence number must be available
-  # to your customer account. If left blank or set to 0 (default) the latest sequence number available will be installed.
-  #
-  # Possible options: 0 - latest sequence number provided by Dozuki
-  # Default: 0 (which will install latest sequence)
-  #replicated_app_sequence_number = 0
+  #dozuki_customer_id_parameter_name = ""
 
   # On fresh installs this variable specifies which channel to find the sequence indicated in `replicated_app_sequence_number`
   # variable. This channel id must be associated to your customer account. If left blank the default channel id will be used.
