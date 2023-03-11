@@ -48,8 +48,8 @@ locals {
   # If deploying on a workstation, what AWSCLI credential profile should we use.
   # Note: This is not used if deploying using codepipeline & cloudformation.
   #
-  # Default: "default"
-  #aws_profile = "default"
+  # Default: ""
+  #aws_profile = ""
 
   # Google translate API token to support machine translation.
   #
