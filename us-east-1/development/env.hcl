@@ -179,8 +179,8 @@ locals {
   #
   # It's imperative you keep the "type" values the same and only replace the donor bucket names with the actual values.
   #
-  # Default: ""
-  #s3_existing_buckets = ""
+  # Default: []
+  #s3_existing_buckets = []
 
   # AWS KMS key identifier for RDS encryption. The identifier can be one of the following format: Key id, key ARN,
   # alias name or alias ARN
