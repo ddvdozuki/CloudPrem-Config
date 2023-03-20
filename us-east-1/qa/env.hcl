@@ -48,8 +48,8 @@ locals {
   # If deploying on a workstation, what AWSCLI credential profile should we use.
   # Note: This is not used if deploying using codepipeline & cloudformation.
   #
-  # Default: "default"
-  #aws_profile = "default"
+  # Default: ""
+  #aws_profile = ""
 
   # Google translate API token to support machine translation.
   #
@@ -146,27 +146,41 @@ locals {
 
   # --- BEGIN Database and storage Options --- #
 
-  # AWS KMS key identifier for S3 encryption. The identifier can be one of the following format: Key id, key ARN, alias
+  # AWS KMS key identifier for S3 encryption used for migrations. The identifier can be one of the following format: Key id, key ARN, alias
   # name or alias ARN
   #
-  # Default: "alias/aws/s3"
-  #s3_kms_key_id = "alias/aws/s3"
-
-  # Whether to create the Dozuki S3 buckets or not. If this is set to false, you must specify the bucket names in the
-  # variables below.
+  # Note: This value is only used when migrating bucket contents from one stack to another. This is the donor buckets KMS Key.
   #
-  # Possible options: true, false
-  # Default: true
-  #create_s3_buckets = true
+  # Default: ""
+  #s3_kms_key_id = ""
 
   # If you have existing data in S3 buckets you can specify them here. These should be left blank if creating a fresh
-  # install. If setting these variables, be sure to set "create_s3_buckets" to false or these will be ignored.
+  # install.
   #
-  #s3_objects_bucket = ""
-  #s3_images_bucket = ""
-  #s3_documents_bucket = ""
-  #s3_pdfs_bucket = ""
-  #s3_logging_bucket = ""
+  # Note: This a list of objects with the following anatomy:
+  #  [
+  #    {
+  #      type        = "doc",
+  #      bucket_name = "doc-donor-bucket-name"
+  #    },
+  #    {
+  #      type        = "image",
+  #      bucket_name = "image-donor-bucket-name"
+  #    },
+  #    {
+  #      type        = "obj",
+  #      bucket_name = "object-donor-bucket-name"
+  #    },
+  #    {
+  #      type        = "pdf",
+  #      bucket_name = "pdf-donor-bucket-name"
+  #    }
+  #  ]
+  #
+  # It's imperative you keep the "type" values the same and only replace the donor bucket names with the actual values.
+  #
+  # Default: []
+  #s3_existing_buckets = []
 
   # AWS KMS key identifier for RDS encryption. The identifier can be one of the following format: Key id, key ARN,
   # alias name or alias ARN
