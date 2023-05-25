@@ -58,6 +58,55 @@ locals {
   # Default: ""
   #google_translate_api_token = ""
 
+
+  # The email address resource to which we will send alarm notifications.
+  #
+  # Note: Either (or both) this variable or `slack_webhook_url` below needs to be set.
+  #
+  # Default: ""
+  alarm_email = "cloudprem@dozuki.com"
+
+  # The Slack webhook URL to which we will send alarm notifications.
+  #
+  # Note: Either (or both) this variable or `alarm_email` above needs to be set.
+  #
+  # Default: ""
+  #slack_webhook_url = ""
+
+  # Subdomain format specifying the order and inclusion of customer, environment, region, and account id.
+  # This variable denotes the format the subdomain will take. For example, assume the following is true:
+  #
+  # 1. var.customer = dozuki
+  # 2. var.environment = production
+  # 3. AWS region = us-east-1
+  # 4. AWS account id = 12345678
+  # 5. var.subdomain_format = ["%CUSTOMER%", "%ENVIRONMENT%", "%REGION%", "%ACCOUNT%"]
+  #
+  # This will generate the following subdomain: dozuki-production-us-east-1-12345678.dozuki.cloud
+  #
+  # Additionally, if you wanted to only include the environment, region, and customer id in that order
+  # (or any other subset/order of the default values) you could change the format thus:
+  # ["%ENVIRONMENT%", "%REGION%", "%CUSTOMER%"]
+  # and it would instead generate a subdomain like this: production-us-east-1-dozuki.dozuki.cloud.
+  #
+  # Note: the only required component is "%CUSTOMER%"
+  #
+  # Default: ["%CUSTOMER%", "%ENVIRONMENT%", "%REGION%", "%ACCOUNT%"]
+  subdomain_format = ["%CUSTOMER%", "%ENVIRONMENT%", "%REGION%"]
+
+  # Subdomain override for upgrades only, new stacks use `customer`. If the previous version used an identifier but you
+  # want the subdomain to be different, set it here.
+  #
+  # Default: ""
+  #subdomain_override = ""
+
+  # External fully qualified domain name. If this stack is deployed to use an external domain, set it here and cert-manager
+  # will configure automatic LetsEncrypt certificates for it using the HTTP01 challenge, ensure the FQDN in this value is
+  # updated to a CNAME pointing to the NLB domain name provided during provisioning.
+  #
+  # Default: ""
+  #external_fqdn = ""
+
   # --- END General Configuration --- #
 
   # --- BEGIN Networking Configuration --- #
@@ -234,6 +283,15 @@ locals {
   # Possible options: true, false
   # Default: false
   #enable_bi = false
+
+  # If BI is enabled and you need either WRITE or PUBLIC access to the BI database this should be set to true to use DMS
+  # instead of an RDS Read Replica for BI.
+  #
+  # Note: If public access is enabled below, this value gets set to true automatically.
+  #
+  # Possible options: true, false
+  # Default: false
+  #bi_dms_enabled = false
 
   # If BI is enabled above, this flag will allow or deny internet access to the BI database server. If you set this to
   # true, be sure to update the `bi_access_cidrs` variable to an ip range that includes only the locations you want to
