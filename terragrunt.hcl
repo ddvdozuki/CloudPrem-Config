@@ -6,6 +6,8 @@ locals {
   environment_vars = read_terragrunt_config(find_in_parent_folders("env.hcl"))
 
   aws_region   = local.region_vars.locals.aws_region
+
+  dns_role = local.aws_region == "us-gov-west-1" ? "arn:aws-us-gov:iam::446787640263:role/Route53AccessRole" : "arn:aws:iam::010601635461:role/Route53AccessRole"
 }
 
 # Generate an AWS provider block
@@ -15,6 +17,14 @@ generate "provider" {
   contents  = <<EOF
 provider "aws" {
   region = "${local.aws_region}"
+}
+provider "aws" {
+  alias  = "dns"
+  region = "${local.aws_region}"
+
+  assume_role {
+    role_arn = "${local.dns_role}"
+  }
 }
 EOF
 }
@@ -45,6 +55,6 @@ remote_state {
 # Configure root level variables that all resources can inherit. This is especially helpful with multi-account configs
 # where terraform_remote_state data sources are placed directly into the modules.
 inputs = merge(
-local.region_vars.locals,
-local.environment_vars.locals,
+  local.region_vars.locals,
+  local.environment_vars.locals,
 )
