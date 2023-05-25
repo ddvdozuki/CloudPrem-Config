@@ -7,11 +7,13 @@ locals {
   # The length of the Environment value must be 6 characters or less.
   environment = "dev"
 
-  # Additional identifier to be prepended to all resource names
-  # Note: This variable can be set at stack creation via the cloudformation template. If you do set this variable here
-  # be sure to set OverrideRepositoryParameters setting to 'false' when creating the pipeline stack in cloudformation.
+  # Additional identifier to be prepended to all resource names and included in their provisioned subdomain.
   #
-  #identifier = ""
+  # Note: This variable can be set at stack creation via the CloudFormation template. If you do set this variable here
+  # be sure to set OverrideRepositoryParameters setting to 'false' when creating the pipeline stack in CloudFormation.
+  #
+  # Default: "dozuki
+  #customer = "dozuki"
 
   # The SSM parameter name that stores the Dozuki Customer ID provided to you. If empty Terraform will attempt to get
   # the license from a parameter with name /{identifier}/dozuki/{environment}/customer_id or
