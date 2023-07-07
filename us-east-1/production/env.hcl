@@ -246,13 +246,17 @@ locals {
   #
   #rds_snapshot_identifier = ""
 
-  # The instance type to use for your database. See this page for a breakdown of the performance and cost differences
-  # between the different instance types:
+  # A list of preferred instance types to use for your database. See this page for a breakdown of the performance and
+  # cost differences between the different instance types:
   # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+  # See this list for supported instance types:
+  # https://github.com/Dozuki/CloudPrem-Infra/blob/ae569846801904b47bc79620b5dd0e420d0c9722/terraform/physical/main.tf#L91
   #
-  # Note: In some AWS regions they do not have m4 instances so you may need to switch to m5 and vice versa.
-  # Default: "db.m4.large"
-  #rds_instance_type = "db.m4.large"
+  #
+  # Note: In some AWS regions they do not have m4 instances so you may need to switch to m5 and vice versa. The default
+  #       option will automatically fallback to m4 instances if m5 is not available.
+  # Default: ["db.m5.large", "db.m4.large"]
+  #rds_preferred_instance_classes = ["db.m5.large", "db.m4.large"]
 
   # If true we will tell RDS to automatically deploy and manage a highly available standby instance of your database.
   # Enabling this doubles the cost of the RDS instance but without it you are susceptible to downtime if the AWS
